@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void BFS(vector<vector<int>> &grid, queue<pair<pair<int, int>, int>> &q) {
+    int m = grid.size();
+    int n = grid[0].size();
+    int delRows[] = {-1, 0, 1, 0};
+    int delColumns[] = {0, 1, 0, -1};
+    while(!q.empty()) {
+        int front_row = q.front().first.first;
+        int front_col = q.front().first.second;
+        int level = q.front().second;
+        q.pop();
+        for(int i = 0; i < 4; i++) {
+            int delrow = front_row + delRows[i];
+            int delcol = front_col + delColumns[i];
+            if(delrow >= 0 && delrow < m && delcol >= 0 && delcol < n && grid[delrow][delcol] == -1) {
+                    grid[delrow][delcol] = level + 1;
+                    q.push({{delrow, delcol}, level + 1});
+            }
+        }
+    }
+}
+
+int main() {
+    
+    int m = 3, n = 4;
+    vector<vector<int>> grid(m, vector<int>(n));
+    queue<pair<pair<int, int>, int>> q;
+    
+    for(int i = 0; i < m; i++) {
+        cout<<"Enter "<<i + 1<<" row :- ";
+        for(int j = 0; j < n; j++) {
+            cin>>grid[i][j];
+        }
+        cout<<endl;
+    }
+    cout<<"2 D grid is :- "<<endl;
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            cout<<grid[i][j]<<" ";
+            if(grid[i][j] == 1) {
+                grid[i][j] = 0;
+                q.push({{i, j}, 0});
+            }
+            else {
+                grid[i][j] = -1;
+            }
+        }
+        cout<<endl;
+    }
+    
+    cout<<"Grid after add distance to 1 is :- "<<endl;
+    BFS(grid, q);
+    
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            cout<<grid[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    
+    
+    return 0;
+}
